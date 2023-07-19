@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1> What does <span style="color:red;">{{ word.word.abstract_word }}</span> mean in <span style="color:green;"> {{ word.language }}?</span></h1>
+
+    {%  if is_submitted %}
+        {% if is_match %}
+            <h2>Correct, {{ word.word.abstract_word }} means {{ word.text }} in {{ word.language }}</h2>
+        {% else %}
+            <h2>Try Again</h2>
+        {% endif %}
+        {% else %}
+        <form method="post" action=" {% url 'word-detail' word.pk %}">
+        {% csrf_token %}
+            <label for="word_input"> Type the word {{ word.word.abstract_word }} in</label>
+            <input type="text" id="word_input" name="word_input" placeholder="{{ word.word.abstract_word }}">
+            <button type="submit">Submit</button>
+        </form>
+    {% endif %}
+
+
+
+</body>
+</html>
