@@ -37,3 +37,13 @@ Via the Language model support for new languages can be implemented. It is not d
 The Word model links to both the AbstractWord and Language models through foreign key relationships, establishing a connection between an abstract concept and its translated representations in different languages.
 By separating these models, the Site will not contain an artificial language barrier. Adding support for another language is as simple as adding it in the field in the admin-backend.
 
+## To Do
+I will shortly outline what's missing for the app to be usable. You will realise this upon copying and running :-)
+
+1. An actual frontend
+2. Advanced backend-logic
+    * User-model
+    * randomised word view
+    * a listview that only gives the word in a specified language
+3. A functionality to upload many words at once. Doing so manually is a tedious task
+
