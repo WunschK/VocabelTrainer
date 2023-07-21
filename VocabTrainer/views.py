@@ -11,15 +11,34 @@ class IndexView(TemplateView):
 
 
 class WordListView(ListView):
-    def get(self, request):
+    model = Word
+    template_name = 'word_list.html'
+    context_object_name = 'words'
+    def get_queryset(self):
         words = Word.objects.all()
-        return render(request, 'vocabtrainer/word_list.html', {'words':words})
+        return words
+
+# class LanguageWordListView(ListView):
+#     def get(self, request, language):
+#         words = Word.objects.all().filter(language__name= language)
+#         context = {
+#             'words': words,
+#             'language':language
+#
+#         }
+#         return render(request, 'VocabTrainer/word_list.html', context)
+
+
+
 
 class LanguageWordListView(ListView):
-    def get(self, request, language):
-        WP = Word.objects.get(language=language)
-        words_language = WP.values()
-        return render(request, 'vocabTrainer/word_list.html', {'words':words_language})
+    template_name = 'word_list.html'
+    model = Word
+    context_object_name = 'words'
+    def get_queryset(self, **kwargs):
+        words = super().get_queryset(**kwargs)
+        return words.filter(language__name = self.kwargs['language'])
+
 
 
 class WordDetailView(DetailView):
@@ -28,7 +47,7 @@ class WordDetailView(DetailView):
         context = {
             'word' : word
         }
-        return render(request, 'vocabtrainer/word_detail.html', context)
+        return render(request, 'VocabTrainer/word_detail.html', context)
     def post(self, request, pk):
         word = Word.objects.get(pk=pk)
         user_input = request.POST.get('word_input')
@@ -46,7 +65,7 @@ class WordDetailView(DetailView):
         else:
             context['is_match'] = False
 
-        return render(request, 'vocabtrainer/word_detail.html', context)
+        return render(request, 'VocabTrainer/word_detail.html', context)
 
 
 # Ich glaube dass ich einen Button "welche Sprache willst du verbessern brauche um auf den entsprechenden Pfad zu kommen,
