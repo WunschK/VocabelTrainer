@@ -1,6 +1,8 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
+from django.urls import reverse
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import AbstractWord, Language, Word
+import random
 # Create your views here.
 
 class IndexView(TemplateView):
@@ -17,7 +19,7 @@ class LanguageWordListView(ListView):
     def get(self, request, language):
         WP = Word.objects.get(language=language)
         words_language = WP.values()
-        return render(request, 'vocabtrainer/word_list.html', {'words':words_language})
+        return render(request, 'vocabTrainer/word_list.html', {'words':words_language})
 
 
 class WordDetailView(DetailView):
@@ -36,6 +38,11 @@ class WordDetailView(DetailView):
         }
         if user_input == word.text:
             context['is_match'] = True
+            random_id= random.randint(1, Word.objects.count())
+            redirect_url = reverse('word-detail', kwargs={'pk': random_id})
+            redirect_url_with_param = f'{redirect_url}?refresh={random_id}'
+
+            return redirect(f'{redirect_url_with_param}',)
         else:
             context['is_match'] = False
 
