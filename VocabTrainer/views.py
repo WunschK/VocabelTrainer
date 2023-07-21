@@ -18,6 +18,7 @@ class WordListView(ListView):
         words = Word.objects.all()
         return words
 
+
 # class LanguageWordListView(ListView):
 #     def get(self, request, language):
 #         words = Word.objects.all().filter(language__name= language)
@@ -33,22 +34,31 @@ class WordListView(ListView):
 
 class LanguageWordListView(ListView):
     template_name = 'word_list.html'
-    model = Word
-    context_object_name = 'words'
-    def get_queryset(self, **kwargs):
-        words = super().get_queryset(**kwargs)
-        return words.filter(language__name = self.kwargs['language'])
+    model = Word, Language
+    def get_queryset(self):
+        language = self.kwargs['language']
+        Words = Word.objects.all()
+        words = Words.filter(language__name=language)
+        return words
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['language'] = self.kwargs['language']
+        return context
+
+
 
 
 
 class WordDetailView(DetailView):
-    def get(self, request, pk):
+    def get(self, request, pk, language):
         word = Word.objects.get(pk=pk)
+        language = language
         context = {
-            'word' : word
+            'word' : word,
+            'language':language
         }
         return render(request, 'VocabTrainer/word_detail.html', context)
-    def post(self, request, pk):
+    def post(self, request, pk): # here the language is missing
         word = Word.objects.get(pk=pk)
         user_input = request.POST.get('word_input')
         context = {

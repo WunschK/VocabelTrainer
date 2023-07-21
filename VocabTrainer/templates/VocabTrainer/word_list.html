@@ -10,7 +10,7 @@
 
     <ul>
         {% for word in words %}
-            <li><a href=" {%  url 'word-detail' word.pk %}">{{ word.text }}</a></li>
+            <li><a href=" {%  url 'word-detail' word.pk %}">{{ word.word.abstract_word }}</a></li>
         {% endfor %}
     </ul>
 
