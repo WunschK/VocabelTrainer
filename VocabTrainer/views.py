@@ -12,7 +12,9 @@ class IndexView(TemplateView):
 
 
 class WordListView(ListView):
-    '''list of all words in the database - mainly a intermediate step so that I can check functionality'''
+    '''list of all words in the database - mainly a intermediate step so that I can check functionality.
+    will probably defunct for good, as this view is not really relevant. But was a nice entry point
+    '''
     model = Word
     template_name = 'word_list.html'
     context_object_name = 'words'
