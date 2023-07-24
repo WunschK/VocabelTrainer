@@ -6,11 +6,13 @@ import random
 # Create your views here.
 
 class IndexView(TemplateView):
+    '''Index View - welcomes the users in the future'''
     def get(self, request):
         return HttpResponse("<h1>Index</h1>")
 
 
 class WordListView(ListView):
+    '''list of all words in the database - mainly a intermediate step so that I can check functionality'''
     model = Word
     template_name = 'word_list.html'
     context_object_name = 'words'
@@ -25,6 +27,7 @@ class WordListView(ListView):
 
 
 class LanguageWordListView(ListView):
+    '''users will pick a language later on and get a filtered list of elements which they can click'''
     template_name = 'word_list.html'
     model = Word
     def get_queryset(self):
@@ -44,6 +47,9 @@ class LanguageWordListView(ListView):
 
 
 class WordDetailView(DetailView):
+    '''shows the detail of a word users clicked on or that is randomly displayed to them.
+    Here a form will appear that users have to enter the meaning of the word.
+    '''
     def get(self, request, pk, language):
         word = Word.objects.get(pk=pk)
         language = language
