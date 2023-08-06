@@ -30,6 +30,10 @@ It contains  four fields and the __str_method:
 5. __str__ method: This method defines how the object should be represented as a string. It combines word, language, text, and definition to create a human-readable representation.
 
 
+# Technologies used
+1. Django
+2. CSS
+3. HTML
 ## Summary
 
 The AbstractWord model serves as a base model for abstract words (in English). Other models can use the AbstractWord model as a foreign key to represent a concept with more specific details.
@@ -40,7 +44,7 @@ By separating these models, the Site will not contain an artificial language bar
 ## To Do
 I will shortly outline what's missing for the app to be usable. You will realise this upon copying and running :-)
 
-1. An actual frontend - I aim for something along these lines:
+1. An actual responsive frontend - I aim for something along these lines:
  ![img.png](img.png)
 2. Advanced backend-logic
     * User-model
