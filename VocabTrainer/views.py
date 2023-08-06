@@ -7,8 +7,7 @@ import random
 
 class IndexView(TemplateView):
     '''Index View - welcomes the users in the future'''
-    def get(self, request):
-        return HttpResponse("<h1>Index</h1>")
+    template_name= 'VocabTrainer/templates/index.html'
 
 
 class WordListView(ListView):
@@ -16,7 +15,7 @@ class WordListView(ListView):
     will probably defunct for good, as this view is not really relevant. But was a nice entry point
     '''
     model = Word
-    template_name = 'word_list.html'
+    template_name = 'VocabTrainer/templates/word_list.html'
     context_object_name = 'words'
     def get_queryset(self):
         words = Word.objects.all()
@@ -30,7 +29,7 @@ class WordListView(ListView):
 
 class LanguageWordListView(ListView):
     '''users will pick a language later on and get a filtered list of elements which they can click'''
-    template_name = 'word_list.html'
+    template_name = 'VocabTrainer/templates/word_list.html'
     model = Word
     def get_queryset(self):
         language = self.kwargs['language'].lower()
@@ -59,7 +58,7 @@ class WordDetailView(DetailView):
             'word' : word,
             'language':language
         }
-        return render(request, 'VocabTrainer/word_detail.html', context)
+        return render(request, 'VocabTrainer/templates/word_detail.html', context)
     def post(self, request, pk): # here the language is missing
         word = Word.objects.get(pk=pk)
         user_input = request.POST.get('word_input')
@@ -69,15 +68,15 @@ class WordDetailView(DetailView):
         }
         if user_input == word.text:
             context['is_match'] = True
-            random_id= random.randint(1, Word.objects.count())
-            redirect_url = reverse('word-detail', kwargs={'pk': random_id})
+            random_id = random.randint(1, Word.objects.count())
+            redirect_url = reverse('word-detail', kwargs={'pk': random_id, 'language': word.language })
             redirect_url_with_param = f'{redirect_url}?refresh={random_id}'
 
-            return redirect(f'{redirect_url_with_param}',)
+            return redirect(f'{redirect_url_with_param}')
         else:
             context['is_match'] = False
 
-        return render(request, 'VocabTrainer/word_detail.html', context)
+        return render(request, 'VocabTrainer/templates/word_detail.html', context)
 
 
 # Ich glaube dass ich einen Button "welche Sprache willst du verbessern brauche um auf den entsprechenden Pfad zu kommen,

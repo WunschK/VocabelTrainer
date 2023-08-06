@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="{%  static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <title>Word Up!</title>
+</head>
+<body>
+<header>
+<nav>
+  <ul>
+      <a href="{% url 'index' %}">Word Up!</a>
+      <li>Home</li>
+      <li>About</li>
+      <li>Contact</li>
+  </ul>
+    <button> Sign Up</button>
+</nav>
+</header>
+    <main>
+{% block content %}
+{%  endblock %}
+
+    </main>
+</body>
+</html>

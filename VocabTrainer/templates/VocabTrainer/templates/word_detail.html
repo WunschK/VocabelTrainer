@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'VocabTrainer/templates/base.html' %}
 
-<h1> What does <span style="color:red;">{{ word.word.abstract_word }}</span> mean in <span style="color:green;"> {{ word.language }}?</span></h1>
+{% block content %}
 
+<h2 class="word-detail"> What does <span class="searched">{{ word.word.abstract_word }}</span> mean in {{ word.language.name }}?</h2>
+<div class="overview-container">
+    <div class="overview">
     {%  if is_submitted %}
         {% if is_match %}
             <h2>Correct, {{ word.word.abstract_word }} means {{ word.text }} in {{ word.language }}</h2>
@@ -22,8 +19,7 @@
             <button type="submit">Submit</button>
         </form>
     {% endif %}
+</div>
+</div>
 
-
-
-</body>
-</html>
+{% endblock %}

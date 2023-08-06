@@ -1,0 +1,125 @@
+/*
+This is the CSS for the Word Up! app.
+I am trying to keep it to a minimum and still make it look great.
+Besides the :root which sits at first position, the elements are ordered alphabetical, with attributes and pseudo-selectors following in alphabetical order:
+
+element
+element:pseudo-selector(a->z)
+element.class(a->z)
+element.class(a->z):pseudo-selector(a->z)
+
+concrete example:
+a {
+styles
+}
+
+a:hover{
+styles
+}
+
+a.hello{
+styles
+}
+a.hello:hover{
+styles
+}
+
+*/
+
+
+:root {
+    --background: rgb(255,247,246);
+    --accent: rgb(247,141,167);
+    --highlight: rgb(238,96,67);
+    --text: rgb(20,20,20);
+
+}
+
+a{
+    text-decoration: none;
+    color: var(--text);
+}
+
+a:hover{
+    color: var(--accent);
+}
+
+button{
+    background: var(--highlight);
+    border-radius: 4px;
+    border-style: none;
+    color:white;
+    height: 3rem;
+    padding: 1rem 1rem;
+}
+
+button:hover{
+    cursor:pointer;
+}
+body{
+    font-family: "Montserrat", sans-serif;
+    background:white;
+    color: var(--text);
+}
+
+
+div.overview-container{
+    display:grid;
+    margin: 0;
+    padding:0;
+    width:100%;
+
+}
+
+div.overview{
+    grid-column: 2;
+    padding: 3rem 25rem;
+}
+div.overview:nth-child(odd) {
+    background: var(--background);
+}
+div.overview:nth-child(even){
+    background:white;
+
+}
+
+h1{
+    font-weight:500;
+    font-size: 4rem;
+}
+
+h2{
+    font-weight:400;
+    font-size: 3rem;
+}
+
+h2.word-detail{
+    text-align:center;
+}
+
+main {
+    padding:3.5rem 0rem;
+}
+
+
+nav {
+    background:white;
+    overflow: hidden;
+    position: fixed;
+    top:0;
+    text-align: right;
+    width:100%;
+}
+
+
+nav * {
+    display:inline-block;
+    margin-right:3rem;
+}
+
+
+span.searched{
+    color:var(--highlight);
+}
+
+

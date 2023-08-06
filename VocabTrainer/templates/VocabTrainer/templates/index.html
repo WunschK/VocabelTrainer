@@ -1,0 +1,30 @@
+{% extends 'VocabTrainer/templates/base.html' %}
+
+{% block content %}
+
+    <div class="overview-container">
+        <div class="overview">
+
+        <h1>Word Up!</h1>
+        <h2>Boost Your Vocab Skills</h2>
+        <p>Level up your vocabulary in any of our supported languages</p>
+        <button>View our Languages</button>
+        </div>
+
+        <div class="overview">
+        <h2>Start now!</h2>
+        <p>We are proud that you can boost your vocabulary in the following languages</p>
+        <ul>
+            <li><a href="{% url 'lang-word-list-view' 'German' %}">German</a></li>
+            <li><a href="{% url 'lang-word-list-view' 'Bahasa_Indonesia' %}">Bahasa Indonesia</a></li>
+        </ul>
+        </div>
+        <div class="overview">Here news will appear ... i.e. supported languages, new words added, how many customers.
+        </div>
+
+        <div class="overview">
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+        </div>
+    </div>
+
+{% endblock %}

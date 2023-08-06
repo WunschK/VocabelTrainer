@@ -11,3 +11,4 @@ urlpatterns = [
     path('word-list/<str:language>/<int:pk>', WordDetailView.as_view(), name="word-detail"),
     path('word-list/<int:pk>', WordDetailView.as_view(), name="word-detail"),
     ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
