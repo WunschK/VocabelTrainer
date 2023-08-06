@@ -40,7 +40,8 @@ By separating these models, the Site will not contain an artificial language bar
 ## To Do
 I will shortly outline what's missing for the app to be usable. You will realise this upon copying and running :-)
 
-1. An actual frontend
+1. An actual frontend - I aim for something along these lines:
+ ![img.png](img.png)
 2. Advanced backend-logic
     * User-model
     * randomised word view
