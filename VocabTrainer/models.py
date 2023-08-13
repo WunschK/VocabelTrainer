@@ -18,7 +18,7 @@ class AbstractWord(models.Model):
 class Language(models.Model):
     '''The language(s) that are supported for translations
     '''
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -37,3 +37,5 @@ class Word(models.Model):
     def __str__(self):
         return f'{self.word}, {self.language}, {self.text}, {self.definition}'
 
+
+# Somehow I need to store the words that users already mastered and take them out of the db for that user.

@@ -2,6 +2,7 @@
 
 {% block content %}
 
+
 <h2 class="word-detail"> What does <span class="searched">{{ word.word.abstract_word }}</span> mean in {{ word.language.name }}?</h2>
 <div class="overview-container">
     <div class="overview">
@@ -20,6 +21,17 @@
         </form>
     {% endif %}
 </div>
+</div>
+
+<div class="card">
+{#    <form method="post" action="{%  url 'word-detail' current_word.id %}">#}
+{#        {% csrf_token %}#}
+{#        <fieldset>#}
+{#            <legend>Word Bedeutung</legend>#}
+{#            {{ form.as_p }}#}
+{#            <button type="submit">Go</button>#}
+{#        </fieldset>#}
+{#    </form>#}
 </div>
 
 {% endblock %}

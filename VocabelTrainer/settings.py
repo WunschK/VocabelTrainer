@@ -56,7 +56,7 @@ ROOT_URLCONF = 'VocabelTrainer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'VocabTrainer/templates/VocabTrainer/templates']
         ,
         'APP_DIRS': True,
         'OPTIONS': {

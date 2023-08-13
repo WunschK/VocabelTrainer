@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
-from django.urls import reverse
-from django.views.generic import TemplateView, ListView, DetailView
+from django.shortcuts import render, redirect, get_list_or_404
+from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, ListView, DetailView, FormView
+from .forms import AnswerWord
 from .models import AbstractWord, Language, Word
 import random
 # Create your views here.
@@ -10,6 +11,7 @@ class IndexView(TemplateView):
     template_name= 'VocabTrainer/templates/index.html'
 
 
+# Do I really need the WordListView?
 class WordListView(ListView):
     '''list of all words in the database - mainly a intermediate step so that I can check functionality.
     will probably defunct for good, as this view is not really relevant. But was a nice entry point
@@ -17,14 +19,10 @@ class WordListView(ListView):
     model = Word
     template_name = 'VocabTrainer/templates/word_list.html'
     context_object_name = 'words'
+
     def get_queryset(self):
         words = Word.objects.all()
         return words
-
-
-
-
-
 
 
 class LanguageWordListView(ListView):
@@ -33,9 +31,8 @@ class LanguageWordListView(ListView):
     model = Word
     def get_queryset(self):
         language = self.kwargs['language'].lower()
-        Word_all = Word.objects.all()
-        words = Word_all.filter(language__name=language)
-        return words
+        return Word.objects.filter(language__name__iexact= language)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['words'] = self.get_queryset()
@@ -43,40 +40,35 @@ class LanguageWordListView(ListView):
         return context
 
 
-
-
-
-
-class WordDetailView(DetailView):
-    '''shows the detail of a word users clicked on or that is randomly displayed to them.
-    Here a form will appear that users have to enter the meaning of the word.
+class WordFormView(FormView):
+    '''shows the form to enter the meaning of the word.
+    Forwards to a random new word, once the word is answered correctly.
+    After three incorrect guesses, the word should be skipped
+    Todo 1: Implement logic for wrong answers
+    Todo 2: Implement logic for forwarding
     '''
-    def get(self, request, pk, language):
-        word = Word.objects.get(pk=pk)
-        language = language
-        context = {
-            'word' : word,
-            'language':language
-        }
-        return render(request, 'VocabTrainer/templates/word_detail.html', context)
-    def post(self, request, pk): # here the language is missing
-        word = Word.objects.get(pk=pk)
-        user_input = request.POST.get('word_input')
-        context = {
-            'word' : word,
-            'is_submitted': True
-        }
-        if user_input == word.text:
-            context['is_match'] = True
-            random_id = random.randint(1, Word.objects.count())
-            redirect_url = reverse('word-detail', kwargs={'pk': random_id, 'language': word.language })
-            redirect_url_with_param = f'{redirect_url}?refresh={random_id}'
+    template_name = 'VocabTrainer/templates/word_form.html'
+    form_class = AnswerWord
+    success_url = None
 
-            return redirect(f'{redirect_url_with_param}')
-        else:
-            context['is_match'] = False
+    def get_context_data(self, **kwargs):
+        '''set the context data accordingly - now we can use the current_word in word_form'''
+        context = super().get_context_data(**kwargs)
+        word_id = self.kwargs.get('pk')
+        context['current_word'] = Word.objects.get(pk=word_id)
+        return context
 
-        return render(request, 'VocabTrainer/templates/word_detail.html', context)
+    def form_valid(self, form):
+        '''checks whether the form is valid'''
+        # user_input defines that the field is the form field 'translation'
+        user_input = form.cleaned_data['translation']
+        # here we pass the current word from get_context_data into this function
+        current_word = self.get_context_data()['current_word']
+        if user_input == current_word.text:
+            # if the user input is the correct value, we'll for now forward to the index
+            self.success_url = reverse('index')
+            return super().form_valid(form)
+
 
 
 # Ich glaube dass ich einen Button "welche Sprache willst du verbessern brauche um auf den entsprechenden Pfad zu kommen,

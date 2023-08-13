@@ -1,0 +1,17 @@
+{% extends 'VocabTrainer/templates/base.html' %}
+
+{% block content %}
+
+    <h1> {{ word.word.abstract_word }} </h1>
+<div class="card">
+    <form method="post" action="">
+        {% csrf_token %}
+        <fieldset>
+            <legend> <h3> {{ current_word.word.abstract_word }} in {{ current_word.language }}</h3> -
+                {{ current_word.text }}</legend>
+            {{ form.as_p }}
+            <button type="submit">Go</button>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

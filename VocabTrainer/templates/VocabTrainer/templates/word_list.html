@@ -5,9 +5,9 @@
 <h1> Hi from the <span>{{ language }}</span>  word list</h1>
 
     <ul>
-        {% for word_obj in words %}
-            <li><a href=" {% url 'word-detail' language word_obj.pk %}">{{ word_obj.word.abstract_word }}</a></li>
-        {% endfor %}
+    {%  for word_obj in words %}
+        <li><a href=" {% url 'word-form' language word_obj.pk %}"> {{ word_obj.word.abstract_word }}  </a></li>
+    {% endfor %}
     </ul>
 
 
