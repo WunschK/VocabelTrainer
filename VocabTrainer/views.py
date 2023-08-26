@@ -45,7 +45,6 @@ class WordFormView(FormView):
     Forwards to a random new word, once the word is answered correctly.
     After three incorrect guesses, the word should be skipped
     Todo 1: Implement logic for wrong answers
-    Todo 2: Implement logic for forwarding
     '''
     template_name = 'VocabTrainer/templates/word_form.html'
     form_class = AnswerWord
@@ -64,14 +63,23 @@ class WordFormView(FormView):
         user_input = form.cleaned_data['translation']
         # here we pass the current word from get_context_data into this function
         current_word = self.get_context_data()['current_word']
+        # save the current word language in a variable current language
+        current_language = current_word.language
         if user_input == current_word.text:
-            # if the user input is the correct value, we'll for now forward to the index
-            self.success_url = reverse('index')
-            return super().form_valid(form)
+            # if the user input is the correct value, forward to a random word:
+            # filter Word by the language line that we are in
+            language_words = Word.objects.filter(language=current_language)
+            # remove the current_word.pk so that the next word will not be the same
+            all_language_words_except_current = language_words.exclude(pk=current_word.pk)
+            # Todo 2: Implement a list with "learned words" and put the current word if answered correctly to "learned
+            #  words" and remove it from the word-list
+            #  maybe user handling first with users having their own list of "known words and unknown words
+            if all_language_words_except_current.exists():
+                random_word = random.choice(all_language_words_except_current)
+                self.success_url = reverse('word-form', kwargs={'language':current_language, 'pk':random_word.pk})
+        return super().form_valid(form)
 
 
 
-# Ich glaube dass ich einen Button "welche Sprache willst du verbessern brauche um auf den entsprechenden Pfad zu kommen,
-# dann einfach "language" immer mitschleifen im context und entsprechend auflösen.
-# Zumindest mit zwei Sprachen sollte das möglich sein.
+
 

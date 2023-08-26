@@ -1,7 +1,8 @@
 /*
 This is the CSS for the Word Up! app.
 I am trying to keep it to a minimum and still make it look great.
-Besides the :root which sits at first position, the elements are ordered alphabetical, with attributes and pseudo-selectors following in alphabetical order:
+Besides the :root which sits at first position, the elements are ordered alphabetically,
+with attributes and pseudo-selectors following in alphabetical order:
 
 element
 element:pseudo-selector(a->z)
@@ -23,6 +24,10 @@ styles
 a.hello:hover{
 styles
 }
+b.dog
+
+c
+c:hover
 
 */
 
@@ -55,7 +60,9 @@ button{
 
 button:hover{
     cursor:pointer;
+    color:var(--accent);
 }
+
 body{
     font-family: "Montserrat", sans-serif;
     background:white;
