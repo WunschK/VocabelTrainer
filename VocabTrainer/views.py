@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_list_or_404
+from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from .forms import AnswerWord
@@ -50,12 +51,15 @@ class WordFormView(FormView):
     form_class = AnswerWord
     success_url = None
 
+
+
     def get_context_data(self, **kwargs):
         '''set the context data accordingly - now we can use the current_word in word_form'''
         context = super().get_context_data(**kwargs)
         word_id = self.kwargs.get('pk')
         context['current_word'] = Word.objects.get(pk=word_id)
         return context
+
 
     def form_valid(self, form):
         '''checks whether the form is valid'''
@@ -77,8 +81,12 @@ class WordFormView(FormView):
             if all_language_words_except_current.exists():
                 random_word = random.choice(all_language_words_except_current)
                 self.success_url = reverse('word-form', kwargs={'language':current_language, 'pk':random_word.pk})
+            else:
+                return self.render_to_response(self.get_context_data(form=self.form_class()))
+                # I don't like that I'm repeating myself here
+        else:
+             return self.render_to_response(self.get_context_data(form=self.form_class()))
         return super().form_valid(form)
-
 
 
 
