@@ -48,7 +48,9 @@ I will shortly outline what's missing for the app to be usable. You will realise
  ![img.png](img.png)
 2. Advanced backend-logic
     * User-model
-    * randomised word view
-    * a listview that only gives the word in a specified language
+      * progress tracking
+      * high score
+    * ~~randomised word view~~
+    * ~~a listview that only gives the word in a specified language~~
 3. A functionality to upload many words at once. Doing so manually is a tedious task
 
