@@ -15,7 +15,11 @@
       <li><a href="{%  url 'index' %}">Home</a></li>
       <li>About</li>
       <li>Contact</li>
-      <button>Sign Up</button>
+        {% if user.is_authenticated %}
+        <button> {{ user.get_username }}</button>
+        {% else %}
+        <button>Sign Up</button>
+        {% endif %}
     </ul>
 
 </nav>
