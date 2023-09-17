@@ -17,8 +17,10 @@
       <li>Contact</li>
         {% if user.is_authenticated %}
         <button> {{ user.get_username }}</button>
+            <!-- here I want a dropdown for logout or profile page -->
         {% else %}
-        <button>Sign Up</button>
+        <button type="submit">Sign Up</button>
+            <!-- button redirects to sign in page -->
         {% endif %}
     </ul>
 
