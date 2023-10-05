@@ -18,4 +18,14 @@
 
     </form>
 </div>
+
+    {%  if messages %}
+    {% for message in messages %}
+        <span> {{ message }}</span>
+    {% endfor %}
+    {% endif %}
+
+
 {% endblock %}
+
+

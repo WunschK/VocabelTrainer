@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_list_or_404
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from .forms import AnswerWord
@@ -52,12 +53,12 @@ class WordFormView(FormView):
     success_url = None
 
 
-
     def get_context_data(self, **kwargs):
         '''set the context data accordingly - now we can use the current_word in word_form'''
         context = super().get_context_data(**kwargs)
         word_id = self.kwargs.get('pk')
         context['current_word'] = Word.objects.get(pk=word_id)
+        context['learned_words'] = self.request.session.get('learned_words', [])
         return context
 
 
@@ -70,23 +71,35 @@ class WordFormView(FormView):
         # save the current word language in a variable current language
         current_language = current_word.language
         if user_input == current_word.text:
+            messages.success(self.request, 'correct!')
+
+            learned_words = self.request.session.get('learned_words', [])
+            learned_words.append(current_word.pk)
+            self.request.session['learned_words'] = learned_words
+
+            #mark the current word as learned
+            Word.objects.filter(pk=current_word.pk).update(learned=True)
             # if the user input is the correct value, forward to a random word:
             # filter Word by the language line that we are in
-            language_words = Word.objects.filter(language=current_language)
+            language_words = Word.objects.filter(language=current_language).exclude(learned=True)
             # remove the current_word.pk so that the next word will not be the same
-            all_language_words_except_current = language_words.exclude(pk=current_word.pk)
+            #all_language_words_except_current = language_words.exclude(pk=current_word.pk)
             # Todo 2: Implement a list with "learned words" and put the current word if answered correctly to "learned
             #  words" and remove it from the word-list
             #  maybe user handling first with users having their own list of "known words and unknown words
-            if all_language_words_except_current.exists():
-                random_word = random.choice(all_language_words_except_current)
+            if language_words.exists():
+                random_word = random.choice(language_words)
                 self.success_url = reverse('word-form', kwargs={'language':current_language, 'pk':random_word.pk})
             else:
-                return self.render_to_response(self.get_context_data(form=self.form_class()))
+                Word.objects.filter(pk=current_word.pk).update(learned=False)
+                return HttpResponseRedirect(reverse('index'))
                 # I don't like that I'm repeating myself here
         else:
-             return self.render_to_response(self.get_context_data(form=self.form_class()))
+            messages.error(self.request, 'try again')
+            return self.render_to_response(self.get_context_data(form=self.form_class()))
         return super().form_valid(form)
+
+
 
 
 

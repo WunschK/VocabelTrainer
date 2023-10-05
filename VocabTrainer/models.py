@@ -33,9 +33,10 @@ class Word(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE)
     text = models.CharField(max_length=100, blank=True)
     definition = models.CharField(max_length=100, blank=True)
+    learned = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.word}, {self.language}, {self.text}, {self.definition}'
+        return f'{self.word}, {self.language}, {self.text}, {self.definition}, {self.learned}'
 
 
 # Somehow I need to store the words that users already mastered and take them out of the db for that user.
