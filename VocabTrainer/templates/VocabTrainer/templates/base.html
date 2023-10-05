@@ -4,6 +4,7 @@
 <head>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="{%  static 'css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>Word Up!</title>
 </head>
@@ -16,10 +17,18 @@
       <li>About</li>
       <li>Contact</li>
         {% if user.is_authenticated %}
-        <button> {{ user.get_username }}</button>
+        <button onclick="$('#login-btn').toggle('display')"> {{ user.get_username }}</button>
             <!-- here I want a dropdown for logout or profile page -->
+            <ul id="login-btn" style="display:none;">
+                <li><a href="accounts/logout">Logout</a></li>
+            <li>Profile</li>
+            </ul>
         {% else %}
-        <button type="submit">Sign Up</button>
+        <button onclick="$('#login-btn').toggle('display')">User</button>
+            <ul id="login-btn" style="display:none;">
+                <li><a href="accounts/login">Login</a></li>
+                <li>Register</li>
+            </ul>
             <!-- button redirects to sign in page -->
         {% endif %}
     </ul>
