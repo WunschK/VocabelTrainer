@@ -12,7 +12,14 @@ import json
 class IndexView(TemplateView):
     '''Index View - welcomes the users in the future'''
     template_name= 'VocabTrainer/templates/index.html'
+    model = Language
+    def get_queryset(self):
+        return Language.objects.all()
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['languages'] = self.get_queryset()
+        return context
 
 # Do I really need the WordListView?
 class WordListView(ListView):
@@ -30,8 +37,13 @@ class WordListView(ListView):
 class LanguageList(ListView):
     template_name='VocabTrainer/templates/language_list.html'
     model = Language
+    def get_queryset(self):
+        return Language.objects.all()
 
-
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['languages'] = self.get_queryset()
+        return context
 
 class LanguageWordListView(ListView):
     '''users will pick a language later on and get a filtered list of elements which they can click'''
