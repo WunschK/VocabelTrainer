@@ -34,6 +34,7 @@ It contains  four fields and the __str_method:
 1. Django
 2. CSS
 3. HTML
+4. minimal Javascript and JQuery
 ## Summary
 
 The AbstractWord model serves as a base model for abstract words (in English). Other models can use the AbstractWord model as a foreign key to represent a concept with more specific details.
