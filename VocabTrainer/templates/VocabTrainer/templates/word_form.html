@@ -13,17 +13,15 @@
             <legend> <h3> <em>{{ current_word.word.abstract_word }}</em> in {{ current_word.language }}</h3> </legend>
             <em> {{ current_word.definition }}</em>
             {{ form.as_p }}
-            <button type="submit">Check</button>
+            <input type="submit" value="check"></input>
         </fieldset>
 
     </form>
-</div>
 
-    {%  if messages %}
-    {% for message in messages %}
-        <span> {{ message }}</span>
-    {% endfor %}
-    {% endif %}
+
+                <span id="message" class="message"> </span>
+
+</div>
 
 
 {% endblock %}

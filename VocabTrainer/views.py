@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_list_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from .forms import AnswerWord
 from .models import AbstractWord, Language, Word
 import random
+import json
 # Create your views here.
 
 class IndexView(TemplateView):
@@ -72,7 +73,6 @@ class WordFormView(FormView):
         current_language = current_word.language
         if user_input == current_word.text:
             messages.success(self.request, 'correct!')
-
             learned_words = self.request.session.get('learned_words', [])
             learned_words.append(current_word.pk)
             self.request.session['learned_words'] = learned_words
@@ -84,20 +84,34 @@ class WordFormView(FormView):
             language_words = Word.objects.filter(language=current_language).exclude(learned=True)
             # remove the current_word.pk so that the next word will not be the same
             #all_language_words_except_current = language_words.exclude(pk=current_word.pk)
+
             # Todo 2: Implement a list with "learned words" and put the current word if answered correctly to "learned
             #  words" and remove it from the word-list
             #  maybe user handling first with users having their own list of "known words and unknown words
             if language_words.exists():
                 random_word = random.choice(language_words)
+                new_url = reverse('word-form', kwargs={'language': current_language, 'pk': random_word.pk})
                 self.success_url = reverse('word-form', kwargs={'language':current_language, 'pk':random_word.pk})
+                response_data = {
+                'is_correct': True,
+                'message': 'Correct!',
+                'redirect_url': new_url
+                }
             else:
-                Word.objects.filter(pk=current_word.pk).update(learned=False)
-                return HttpResponseRedirect(reverse('index'))
-                # I don't like that I'm repeating myself here
+                index_url = reverse('index')
+                response_data = {
+                'is_correct': True,
+                'message': 'Correct!',
+                'redirect_url': index_url
+                }
         else:
             messages.error(self.request, 'try again')
-            return self.render_to_response(self.get_context_data(form=self.form_class()))
-        return super().form_valid(form)
+            response_data = {
+                'is_correct': False,
+                'message': 'Try again!',
+            }
+
+        return JsonResponse(response_data)
 
 
 
