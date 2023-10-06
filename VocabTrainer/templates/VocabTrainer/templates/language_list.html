@@ -1,0 +1,12 @@
+{% extends 'VocabTrainer/templates/base.html' %}
+
+{% block content %}
+
+    <h1>Hi from the Language-List</h1>
+
+        <ul>
+            <li><a href="{% url 'lang-word-list-view' 'German' %}">German</a></li>
+            <li><a href="{%  url 'lang-word-list-view' 'Bahasa Indonesia' %}">Bahasa Indonesia</a></li>
+        </ul>
+
+{% endblock %}

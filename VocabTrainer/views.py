@@ -27,6 +27,11 @@ class WordListView(ListView):
         words = Word.objects.all()
         return words
 
+class LanguageList(ListView):
+    template_name='VocabTrainer/templates/language_list.html'
+    model = Language
+
+
 
 class LanguageWordListView(ListView):
     '''users will pick a language later on and get a filtered list of elements which they can click'''
