@@ -27,7 +27,7 @@
         {% else %}
         <button onclick="$('#login-btn').toggle('display')">User</button>
             <ul id="login-btn" style="display:none;">
-                <li><a href="accounts/login">Login</a></li>
+                <li><a href=" {% url 'login' %}">Login</a></li>
                 <li>Register</li>
             </ul>
             <!-- button redirects to sign in page -->
