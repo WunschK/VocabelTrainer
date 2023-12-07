@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect, get_list_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, FormView
 from .forms import AnswerWord
@@ -11,7 +15,7 @@ import json
 
 class IndexView(TemplateView):
     '''Index View - welcomes the users in the future'''
-    template_name= 'VocabTrainer/templates/index.html'
+    template_name= 'templates/index.html'
     model = Language
     def get_queryset(self):
         return Language.objects.all()
@@ -27,7 +31,7 @@ class WordListView(ListView):
     will probably defunct for good, as this view is not really relevant. But was a nice entry point
     '''
     model = Word
-    template_name = 'VocabTrainer/templates/word_list.html'
+    template_name = 'templates/word_list.html'
     context_object_name = 'words'
 
     def get_queryset(self):
@@ -35,7 +39,7 @@ class WordListView(ListView):
         return words
 
 class LanguageList(ListView):
-    template_name='VocabTrainer/templates/language_list.html'
+    template_name= 'templates/language_list.html'
     model = Language
     def get_queryset(self):
         return Language.objects.all()
@@ -45,9 +49,9 @@ class LanguageList(ListView):
         context['languages'] = self.get_queryset()
         return context
 
-class LanguageWordListView(ListView):
+class LanguageWordListView(LoginRequiredMixin,ListView):
     '''users will pick a language later on and get a filtered list of elements which they can click'''
-    template_name = 'VocabTrainer/templates/word_list.html'
+    template_name = 'templates/word_list.html'
     model = Word
     def get_queryset(self):
         language = self.kwargs['language'].lower()
@@ -60,13 +64,44 @@ class LanguageWordListView(ListView):
         return context
 
 
-class WordFormView(FormView):
+class UserProfileView(DetailView):
+    model = User
+    template_name = 'profile.html'
+    context_object_name='user'
+
+    def get_object(self):
+        return User.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class RegisterFormView(FormView):
+    form_class = UserCreationForm
+    template_name = 'new_user.html'
+    success_url = None
+
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return HttpResponseRedirect('profile/<int:pk>')
+        return super().get(request, *args, **kwargs)
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
+
+
+
+
+
+class WordFormView(LoginRequiredMixin,FormView):
     '''shows the form to enter the meaning of the word.
     Forwards to a random new word, once the word is answered correctly.
     After three incorrect guesses, the word should be skipped
     Todo 1: Implement logic for wrong answers
     '''
-    template_name = 'VocabTrainer/templates/word_form.html'
+    template_name = 'templates/word_form.html'
     form_class = AnswerWord
     success_url = None
 

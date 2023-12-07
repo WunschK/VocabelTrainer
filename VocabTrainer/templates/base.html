@@ -16,19 +16,18 @@
     <ul>
       <li><a href="{%  url 'index' %}">Home</a></li>
       <li>About</li>
-      <li>Contact</li>
         {% if user.is_authenticated %}
         <button onclick="$('#login-btn').toggle('display')"> {{ user.get_username }}</button>
             <!-- here I want a dropdown for logout or profile page -->
             <ul id="login-btn" style="display:none;">
-                <li><a href="accounts/logout">Logout</a></li>
-            <li>Profile</li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href=" {% url 'profile' user.pk %}">Profile</a></li>
             </ul>
         {% else %}
         <button onclick="$('#login-btn').toggle('display')">User</button>
             <ul id="login-btn" style="display:none;">
                 <li><a href=" {% url 'login' %}">Login</a></li>
-                <li>Register</li>
+                <li><a href=" {% url 'register' %}">Register</a></li>
             </ul>
             <!-- button redirects to sign in page -->
         {% endif %}
