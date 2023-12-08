@@ -7,7 +7,7 @@
     </h1>
 
 <div class="card">
-    <form method="post" action="">
+    <form id="word-form" method="post" action="">
         {% csrf_token %}
         <fieldset>
             <legend> <h3> <em>{{ current_word.word.abstract_word }}</em> in {{ current_word.language }}</h3> </legend>
