@@ -49,7 +49,7 @@ class LanguageList(ListView):
         context['languages'] = self.get_queryset()
         return context
 
-class LanguageWordListView(LoginRequiredMixin,ListView):
+class LanguageWordListView(LoginRequiredMixin, ListView):
     '''users will pick a language later on and get a filtered list of elements which they can click'''
     template_name = 'templates/word_list.html'
     model = Word
@@ -84,7 +84,7 @@ class RegisterFormView(FormView):
 
     def get(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return HttpResponseRedirect('profile/<int:pk>')
+            return HttpResponseRedirect(reverse('profile', kwargs={'pk':self.request.user.pk}))
         return super().get(request, *args, **kwargs)
     def form_valid(self, form):
         user = form.save()
@@ -95,7 +95,7 @@ class RegisterFormView(FormView):
 
 
 
-class WordFormView(LoginRequiredMixin,FormView):
+class WordFormView(FormView):
     '''shows the form to enter the meaning of the word.
     Forwards to a random new word, once the word is answered correctly.
     After three incorrect guesses, the word should be skipped
