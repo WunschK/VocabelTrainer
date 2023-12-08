@@ -2,16 +2,16 @@
     $(document).ready(function() {
         $('#check-button').click(function(e) {
             e.preventDefault(); // Prevent the default button click behavior
-            $('form').submit(); // Trigger the form submission
+            $('#word-form').submit(); // Trigger the form submission
         });
 
-        $('form').submit(function(e) {
+        $('#word-form').submit(function(e) {
             e.preventDefault(); // Prevent the form from submitting normally
             sendAjaxRequest(); // Call a function to send the AJAX request
         });
 
         // Add an event listener for the "Enter" key press
-        $('form').on('keyup keypress', function(e) {
+        $('#word-form').on('keyup keypress', function(e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode === 13) { // 13 is the key code for "Enter"
                 e.preventDefault(); // Prevent the default form submission
@@ -24,7 +24,7 @@
             $.ajax({
                 type: 'POST',
                 url: '', // Your form submission URL
-                data: $('form').serialize(), // Serialize the form data
+                data: $('#word-form').serialize(), // Serialize the form data
                 dataType: 'json', // Expect JSON response
                 success: function(data) {
                     // Display the response message
@@ -41,3 +41,8 @@
             });
         }
     });
+
+function toggleProfile() {
+    $('#login-btn').toggle('display')
+}
+
