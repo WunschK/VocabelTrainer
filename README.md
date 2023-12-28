@@ -53,5 +53,5 @@ I will shortly outline what's missing for the app to be usable. You will realise
       * high score
     * ~~randomised word view~~
     * ~~a listview that only gives the word in a specified language~~
-3. A functionality to upload many words at once. Doing so manually is a tedious task
+3. ~~A functionality to upload many words at once. Doing so manually is a tedious task~~
 
