@@ -6,10 +6,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView, FormView
-from .forms import AnswerWord
+from django.views.generic import TemplateView, ListView, DetailView, FormView, View
+from .forms import AnswerWord, CSVUploadForm
 from .models import AbstractWord, Language, Word
+from .utils import process_csv_file
 import random
+from .mixins import AdminRequiredMixin
 import json
 # Create your views here.
 
@@ -166,7 +168,21 @@ class WordFormView(FormView):
         return JsonResponse(response_data)
 
 
+class UploadCSVView(AdminRequiredMixin,View):
+    template_name = "templates/upload_csv.html"
+    form_class = CSVUploadForm
+    success_url = None
 
+    def get(self, request, *args, **kwargs):
+        form = CSVUploadForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = CSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            process_csv_file(request.FILES['csv_file'])
+            return redirect('upload-csv')
+        return render(request, self.template_name, {'form': form})
 
 
 
