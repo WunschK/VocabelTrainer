@@ -1,4 +1,4 @@
-from VocabTrainer.views import IndexView, LanguageWordListView, WordListView, WordFormView, LanguageList, RegisterFormView, UserProfileView, UploadCSVView
+from VocabTrainer.views import IndexView, LanguageWordListView, WordListView, WordFormView, LanguageList, SignUpView, UserProfileView, UploadCSVView
 from django.urls import include,path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -11,7 +11,7 @@ urlpatterns = [
     path('word-list/<str:language>/', LanguageWordListView.as_view(), name='lang-word-list-view'),
     path('word-list/<str:language>/<int:pk>', WordFormView.as_view(), name='word-form'),
     path('languages', LanguageList.as_view(), name='language-list'),
-    path('accounts/signup', RegisterFormView.as_view(), name='register'),
+    path('accounts/signup', SignUpView.as_view(), name='register'),
     path('accounts/profile/<int:pk>/', UserProfileView.as_view(), name='profile'),
     path('upload_csv', UploadCSVView.as_view(), name='upload-csv')
     ]

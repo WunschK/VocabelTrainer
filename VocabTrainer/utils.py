@@ -20,4 +20,8 @@ def process_csv_file(csv_file):
             Word.objects.create(word=abstract_word, language=language_indonesian, text=row['Bahasa Indonesia Word'])
 
 
+def get_unlearned_words():
+    pass
+
+
 

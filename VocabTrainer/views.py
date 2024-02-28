@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, FormView, View
-from .forms import AnswerWord, CSVUploadForm
+from .forms import AnswerWord, CSVUploadForm, SignUpForm
 from .models import AbstractWord, Language, Word
 from .utils import process_csv_file
 import random
@@ -79,22 +79,22 @@ class UserProfileView(DetailView):
         return context
 
 
-class RegisterFormView(FormView):
-    form_class = UserCreationForm
-    template_name = 'new_user.html'
-    success_url = None
+class SignUpView(FormView):
+    template_name = 'templates/new_user.html'
+    form_class = SignUpForm
+    success_url= 'None'
 
-    def get(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return HttpResponseRedirect(reverse('profile', kwargs={'pk':self.request.user.pk}))
-        return super().get(request, *args, **kwargs)
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return super().form_valid(form)
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
 
-
-
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.save()
+            return redirect('index')
+        return render(request, self.template_name, {'form': form})
 
 
 class WordFormView(FormView):

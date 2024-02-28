@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 # Create your models here.
@@ -39,4 +40,38 @@ class Word(models.Model):
         return f'{self.word}, {self.language}, {self.text}, {self.definition}, {self.learned}'
 
 
-# Somehow I need to store the words that users already mastered and take them out of the db for that user.
+# Somehow I need to store the words that users already mastered and take them out of the db for that user
+class CustomPermission(Permission):
+    # Define your custom fields here
+
+    class Meta:
+        proxy = True
+
+class CustomGroup(Group):
+    # Define your custom fields here
+
+    class Meta:
+        proxy = True
+class CustomUser(AbstractUser):
+    class Meta:
+        verbose_name = 'Custom User'
+        verbose_name_plural = 'Custom Users'
+
+    groups = models.ManyToManyField(
+        CustomGroup,
+        verbose_name='groups',
+        blank=True,
+        help_text='The groups this user belongs to.',
+        related_name='custom_user_groups'  # Unique related name
+    )
+    user_permissions = models.ManyToManyField(
+        CustomPermission,
+        verbose_name='user permissions',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_name='custom_user_permissions'  # Unique related name
+    )
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    learned_words = models.ManyToManyField('Word')

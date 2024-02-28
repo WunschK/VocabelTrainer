@@ -33,7 +33,7 @@ c:hover
 
 
 :root {
-    --background: rgb(255,247,246);
+    --background: rgb(255,230,215);
     --accent: rgb(247,141,167);
     --highlight: rgb(238,96,67);
     --text: rgb(20,20,20);
@@ -64,9 +64,11 @@ button:hover{
 }
 
 body{
-    font-family: "Montserrat", sans-serif;
+
     background:white;
     color: var(--text);
+    font-family: "Montserrat", sans-serif;
+
 }
 
 div.card{
@@ -86,8 +88,9 @@ div.overview-container{
 }
 
 div.overview{
-    grid-column: 2;
-    padding: 3rem 25rem;
+    margin: auto;
+    text-align: center;
+    width: 66%;
 }
 div.overview:nth-child(odd) {
     background: var(--background);
