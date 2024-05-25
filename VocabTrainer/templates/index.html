@@ -8,7 +8,7 @@
         <h1>Word Up!</h1>
         <h2>Boost Your Vocab Skills</h2>
         <p>Level up your vocabulary in any of our supported languages</p>
-        <a href="{% url 'language-list' %} ">View our Languages</a>
+        <a href="{% url 'language-list' %}">View our Languages</a>
         </div>
 
         <div class="overview">
@@ -16,7 +16,7 @@
         <p>We are proud that you can boost your vocabulary in the following languages</p>
          <ul>
              {%  for lang_obj in languages %}
-                <li><a href=" {% url 'lang-word-list-view' lang_obj %}"> {{ lang_obj.name }}  </a></li>
+                <li><a href="{% url 'lang-word-list-view' lang_obj %}"> {{ lang_obj.name }}  </a></li>
             {% endfor %}
         </ul>
         </div>
